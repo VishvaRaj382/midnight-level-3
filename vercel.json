@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npm --prefix bboard-ui run build",
+  "outputDirectory": "bboard-ui/dist",
+  "framework": "vite"
+}

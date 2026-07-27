@@ -1,0 +1,8 @@
+[build]
+  command = "npm --prefix contract run build && npm --prefix api run build && npm --prefix bboard-ui run build"
+  publish = "bboard-ui/dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

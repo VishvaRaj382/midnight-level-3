@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  install-and-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build contract
+        working-directory: contract
+        run: npm run build
+
+      - name: Test contract
+        working-directory: contract
+        run: npm run test -- --run
+
+      - name: Build API
+        working-directory: api
+        run: npm run build
+
+      - name: Build bboard-cli
+        working-directory: bboard-cli
+        run: npm run build
+
+      - name: Build bboard-ui
+        working-directory: bboard-ui
+        run: npm run build
