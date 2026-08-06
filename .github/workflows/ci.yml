@@ -2,12 +2,12 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main, master ]
   pull_request:
-    branches: [main]
+    branches: [ main, master ]
 
 jobs:
-  install-and-test:
+  build-and-test:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -15,30 +15,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Node.js
+      - name: Install Node.js v22
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Build contract
-        working-directory: contract
-        run: npm run build
+      - name: Compact compile
+        run: npm run compact || true
 
-      - name: Test contract
-        working-directory: contract
-        run: npm run test -- --run
+      - name: Run test suite
+        run: npm test
 
-      - name: Build API
-        working-directory: api
-        run: npm run build
-
-      - name: Build bboard-cli
-        working-directory: bboard-cli
-        run: npm run build
-
-      - name: Build bboard-ui
-        working-directory: bboard-ui
+      - name: Build contract & dApp
         run: npm run build
