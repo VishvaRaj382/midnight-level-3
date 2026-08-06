@@ -1,27 +1,27 @@
-# Midnight Bulletin Board DApp — Level 3 (First Quarter)
-
+# Midnight Bulletin Board DApp
 [![CI](https://github.com/VishvaRaj382/midnight-level-3/actions/workflows/ci.yml/badge.svg)](https://github.com/VishvaRaj382/midnight-level-3/actions/workflows/ci.yml)
-
-> A production-grade privacy-preserving Bulletin Board dApp built on the Midnight network featuring zero-knowledge proofs, unit tests, automated CI/CD, and Lace wallet integration on Preprod testnet.
+> A production-grade privacy-preserving Bulletin Board dApp built on the Midnight network featuring zero-knowledge proofs, comprehensive test suite, CI/CD pipeline, and Lace Wallet integration.
 
 ## Live Demo
 [https://midnight-level-3.netlify.app](https://midnight-level-3.netlify.app)
 
 ## Contract Address
-| Network  | Address                                                          |
-|----------|------------------------------------------------------------------|
+| Network  | Address                          |
+|----------|----------------------------------|
 | Preprod  | `020084f7b494665427ecff72bb4bf2b91cbfdcba3b6bd6539bfbc14b62dbb7ed` |
 
 ## What This Does
-A production-grade decentralized application built on the **Midnight Network**. Users can post messages to a shared bulletin board and take down their own posted messages. All state updates produce zero-knowledge proofs (ZKPs) locally in the browser via the Midnight.js SDK and Lace Wallet DApp connector API before submitting transactions on-chain.
+A decentralized application built on the **Midnight Network**. Users can post messages to a shared bulletin board and take down their own posted messages. All state updates produce zero-knowledge proofs (ZKPs) locally in the browser via the Midnight.js SDK and Lace Wallet DApp connector API before submitting transactions on-chain.
 
 ## Privacy Model
-- **PUBLIC (on-chain, visible to anyone)**: Current bulletin board occupancy state, post sequence number, and active message content.
-- **PRIVATE (private witness, never on-chain)**: User's secret key (`secretKey`), raw signature credentials, and private witness inputs.
-- **PROVED without revealing**: The caller owns the secret key matching the board's posted owner without disclosing the secret key itself on-chain.
+- **PUBLIC**: Current bulletin board state (`VACANT` or `OCCUPIED`), post sequence counter, and active message content on the public ledger.
+- **PRIVATE**: User's local secret key (`secretKey`), witness state, and private credentials which remain strictly on the user's client.
+- **PROVED without revealing**: The poster/caller holds the authorized secret key matching the active post owner without disclosing the secret key on-chain.
 
 ## Privacy Claim
-An on-chain observer can inspect public board state updates and verify ZK proof validity, but **cannot derive or reconstruct the poster's secret key or private credentials**.
+What an on-chain observer sees vs cannot see:
+- **An on-chain observer sees**: Public board state transitions, current message text, and valid zero-knowledge proofs verifying state validity.
+- **An on-chain observer CANNOT see**: The poster's secret key, private witness data, or private signing credentials.
 
 ## Tech Stack
 - **Midnight Network & Compact Smart Contract Language (v0.31.0)**
@@ -44,25 +44,22 @@ An on-chain observer can inspect public board state updates and verify ZK proof 
    ```bash
    npm install --legacy-peer-deps
    ```
-3. **Build contract & frontend**:
+3. **Build contract & application**:
    ```bash
-   npm --prefix contract run build
-   npm --prefix bboard-ui run build
+   npm run build
    ```
 4. **Start local dev server**:
    ```bash
-   npm --prefix bboard-ui run dev
+   npm run dev
    ```
 
 ## Run Tests
-Run the contract unit test suite:
 ```bash
-npm --prefix contract run test -- --run
+npm test
 ```
-*(9 passing unit tests covering circuit logic, state transitions, and zero-knowledge privacy).*
 
 ## CI/CD
-The GitHub Actions workflow (`.github/workflows/ci.yml`) runs automatically on every `push` to `main` and every `pull_request`. It compiles the Compact smart contract, executes the unit test suite, and builds the frontend application.
+The GitHub Actions workflow (`.github/workflows/ci.yml`) runs automatically on every `push` to `main` and every `pull_request`. It checks out the repository, sets up Node.js v22, installs dependencies, compiles the Compact smart contract (`npm run compact`), executes the full unit test suite (`npm test`), and builds the production dApp bundle (`npm run build`).
 
 ## Product Proposal
 See [PROPOSAL.md](PROPOSAL.md) for full product architecture, data model, and mainnet feasibility roadmap.
