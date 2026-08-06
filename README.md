@@ -3,7 +3,7 @@
 > A production-grade privacy-preserving Bulletin Board dApp built on the Midnight network featuring zero-knowledge proofs, comprehensive test suite, CI/CD pipeline, and Lace Wallet integration.
 
 ## Live Demo
-[https://midnight-level-3.netlify.app](https://midnight-level-3.netlify.app)
+[https://midnight-level-3-ecru.vercel.app]
 
 ## Contract Address
 | Network  | Address                          |
